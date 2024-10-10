@@ -340,7 +340,7 @@ for Lo-Fi.
 **Lo-fi equalizer**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="720">
+<img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="520">
 </p>
 
 ## Result & Analysis
