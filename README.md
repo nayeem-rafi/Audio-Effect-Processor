@@ -289,10 +289,13 @@ User can choose semitones pitch shifting parameter from -8 to 8. More positive m
 higher frequency voice and negative means lower frequency deep voice. Here we chose
 two outputs taking semitones of -5 and +5 and we can analyse pitch shifting from
 graph by look over x axis.
-**Pitch Shift(-5)**
+
 <p align="center">
+**Pitch Shift(-5)**
+
 <img src="https://github.com/user-attachments/assets/86c51c85-8ccf-461a-a2e2-d9693360ce70", width="720">
 </p>
+
 
 **Pitch Shift(+5)**
 
@@ -323,13 +326,18 @@ for Lo-Fi.
 <img src="https://github.com/user-attachments/assets/e4886ca4-cca2-42fa-8ee2-ed895d4ec5ba", width="720">
 </p>
 
-**Old radio equalizer**
+<h2 align= "center">
 
+**Old radio equalizer**
+</h2>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/e344d466-d503-4cd2-b700-13c0b986637f", width="720">
 </p>
 
+<h1 align= "center">
+
 **Lo-fi equalizer**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="720">
 </p>
@@ -356,5 +364,3 @@ project’s practical application of DSP techniques, combined with a user-friend
 offers a valuable tool for audio enthusiasts and professionals. Future work could
 focus on optimizing the system for real-time processing and extending its capabilities
 with more advanced effects.
-
-## [Click for Open Source of Project Details & Video](https://drive.google.com/drive/folders/1DnzlJkw3hlO5iq0watlQuw7EBvpG2Dsl?usp=drive_link)
