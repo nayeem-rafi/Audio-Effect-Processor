@@ -291,6 +291,7 @@ two outputs taking semitones of -5 and +5 and we can analyse pitch shifting from
 graph by look over x axis.
 
 <p align="center">
+
 **Pitch Shift(-5)**
 
 <img src="https://github.com/user-attachments/assets/86c51c85-8ccf-461a-a2e2-d9693360ce70", width="720">
