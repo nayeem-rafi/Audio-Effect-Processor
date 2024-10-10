@@ -45,6 +45,6 @@ can cause distortion in audio. Below a sample of input and output is given where
 first we gave input 2x boost and then we gave 0.5x. We find out our gaining effect is
 perfectly working from amplitude analysis of the signal.
 <p align="left">
-<img src="https://drive.google.com/file/d/1Jiu_HLv1czR9bpyVBPLhuixunMI3Mc1Q/view?usp=drive_link", width="720">
+<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
 </p>
 ### Trimming
