@@ -68,7 +68,7 @@ Interface significantly improves the accessibility of our system, catering to bo
 
 • **Can apply multiple effects over one audio**
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/c20c9456-8fa6-40fd-bbc6-5c1bb6bed35c", width="720">
 </p>
 
 ## Basic Effects
@@ -102,7 +102,7 @@ signal than we had convert it to the end time. Here in this sample we choose to 
 by trimming 3 to 6 sec portion where from graph we got to know that it is working.
 X-axis difference is because original and trimmed one respectively in 105and104.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/7e20b060-afb0-4c29-b3a3-7a73c6a0a43f", width="720">
 </p>
 
 ### Fade In
@@ -116,7 +116,7 @@ the amplitude to maximum.
 Here user can choose how much percentage of the audio will be affected by fade-in
 effect. For example, here we choose 70 percent of our audio would be faded in.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/f20ac608-6a1b-444f-8cd6-511086672d6d", width="720">
 </p>
 
 ### Fade Out
@@ -129,7 +129,7 @@ A linear ramp is applied to the end of the audio signal, reducing the amplitude 
 Here user can choose how much percentage of the audio will be affected by fade-out
 effect. For example, here we choose 90 percent of our audio would be faded out.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/6f5a9008-cc91-41cb-b7ad-fb1eff960e72", width="720">
 </p>
 
 ### Reverse
@@ -141,7 +141,7 @@ A matlab function ”flipud” used to flip the audio and play from the backward
 Audio will be reversed like one to ten counting audio will be reversed, ten to one but
 ten will be spelled as reversed ”net” and one will be ”eno”. Here is the sample output.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/26807570-6777-4cdc-bb18-5c9191fb9cb4", width="720">
 </p>
 
 ### Speed Up
@@ -155,7 +155,7 @@ User can chose how much faster they want the audio to be. They can choose betwee
 1 to 4 times. From the graph we can’t analyse this effect. If signal plotted with time
 it can be inspected.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/f064e997-256f-4cde-9edc-010852af75da", width="720">
 </p>
 
 ## Dynamic Effects
@@ -176,7 +176,7 @@ threshold and The release time refers to how quickly the compressor stops compre
 Here as a sample input threshold set to -85dB, attacktime 0.1s,releasetime
 0.01s,makeupgain 1 and ratio 5.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/03520d51-4959-4b35-a1c8-2ba543beef0b", width="720">
 </p>
 
 ### Distortion
@@ -189,7 +189,7 @@ The signal is clipped or non-linearly transformed to create harmonic distortion.
 User can choose amplifying factor to have more distortion. Here in this sample, input
 of amplifying given 1.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/1316d5c5-aa44-4f18-9055-ad9237a20dd3", width="720">
 </p>
 
 ### Normalize
@@ -203,7 +203,7 @@ User can choose the peak of the signal. The normalized signal basically scaled a
 amplitude of1 then multiply with user gain. Here is an example output with peak 1
 chosen.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/d51e7295-2a54-40e3-8f31-2f5b32271dce", width="720">
 </p>
 
 ## Time Based Effects
@@ -226,7 +226,7 @@ frequencies in the reverb decay compared to lower frequencies.
 User can chose wet mixing percentage fo reverb effect. For example, in the sample her
 we choose wet to be 100 percent.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/7bb1872d-c1be-4555-99db-f84f2dafc8fd", width="720">
 </p>
 
 ### Echo
@@ -240,7 +240,7 @@ adding it back to the original signal by taking delay time(0-0.5)s input from us
 #### Input and output Analysis
 Here as a sample we choose 0.1 as delay time.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/fc9fbd49-9afc-4674-afd7-d84cfed6b2d1", width="720">
 </p>
 
 ### Delay
@@ -254,7 +254,7 @@ and no attenuation in echoes.
 Here we take delay time 1 to 4 s as user input. In the sample we tested with delay
 time of 2s.
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/46cde784-7e09-4483-8b88-a761ae7feb6c", width="720">
 </p>
 
 ## Spectrum Processing Effects
@@ -274,7 +274,7 @@ to user needs. Here, in example output we choose delay time as 0.1 and feedback 
 of 1.
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/ab3ac71d-0dad-4549-989c-0c0405b75c51", width="720">
 </p>
 
 ### Pitch shifting
@@ -291,13 +291,13 @@ two outputs taking semitones of -5 and +5 and we can analyse pitch shifting from
 graph by look over x axis.
 **Pitch Shift(-5)**
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/86c51c85-8ccf-461a-a2e2-d9693360ce70", width="720">
 </p>
 
 **Pitch Shift(+5)**
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/770a2f61-0a19-4794-becf-864b6fa8976f", width="720">
 </p>
 
 ### Equalizer
@@ -320,18 +320,18 @@ for Lo-Fi.
 
 **Random input equalizer**
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/e4886ca4-cca2-42fa-8ee2-ed895d4ec5ba", width="720">
 </p>
 
 **Old radio equalizer**
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/e344d466-d503-4cd2-b700-13c0b986637f", width="720">
 </p>
 
-**Lofi equalizer**
+**Lo-fi equalizer**
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
+<img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="720">
 </p>
 
 ## Result & Analysis
