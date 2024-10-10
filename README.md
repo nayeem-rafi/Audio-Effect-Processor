@@ -20,9 +20,12 @@ applications of DSP techniques, enabling users to manipulate audio easily throug
 App Designer.
 
 ## Components
-• Computer: A personal computer for developing and running the processor.
-• MATLAB Software: The main development environment used for implementing
-the effects and building the App Designer.
+• **Computer**:  
+A personal computer for developing and running the processor.
+
+• **MATLAB Software**:  
+The main development environment used for implementing the effects and building the App Designer.
+
 
 ## Methodology
 The Audio Effects Processor implements the following effects. Each effect is implemented
