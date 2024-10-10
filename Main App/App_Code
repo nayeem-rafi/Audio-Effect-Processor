@@ -1,6 +1,5 @@
 classdef App_design_Main_Code < matlab.apps.AppBase
 
-    % Properties that correspond to app components
     properties (Access = public)
         UIFigure                  matlab.ui.Figure
         title                     matlab.ui.control.EditField
