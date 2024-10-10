@@ -1,0 +1,1883 @@
+classdef App_c < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure                  matlab.ui.Figure
+        title                     matlab.ui.control.EditField
+        file_name                 matlab.ui.control.EditField
+        f_name                    matlab.ui.control.EditField
+        BrowseButton              matlab.ui.control.Button
+        PlayOriginalAudioButton   matlab.ui.control.Button
+        ApplyEffectButton         matlab.ui.control.Button
+        PlayProcessedAudioButton  matlab.ui.control.Button
+        ResetButton               matlab.ui.control.Button
+        SaveProcessedAudioButton  matlab.ui.control.Button
+        UIAxes                    matlab.ui.control.UIAxes
+        UIAxes2                   matlab.ui.control.UIAxes
+        EditField                 matlab.ui.control.EditField
+        GainButton                matlab.ui.control.Button
+        TrimButton                matlab.ui.control.Button
+        FadeInButton              matlab.ui.control.Button
+        FadeOutButton             matlab.ui.control.Button
+        ReverseButton             matlab.ui.control.Button
+        SpeedUpDownButton         matlab.ui.control.Button
+        CompressorButton          matlab.ui.control.Button
+        DistortionButton          matlab.ui.control.Button
+        NormalizeButton           matlab.ui.control.Button
+        ReverbButton              matlab.ui.control.Button
+        EchoButton                matlab.ui.control.Button
+        DelayButton               matlab.ui.control.Button
+        ChorusButton              matlab.ui.control.Button
+        PitchShiftingButton       matlab.ui.control.Button
+        ShowOriginalGraphButton   matlab.ui.control.Button
+        EqualizerButton           matlab.ui.control.Button
+    end
+
+    properties (Access = private)
+        y=[]   
+    Fs  
+    y1=[] 
+    y0  
+    Fs1 
+    Fs0 
+    k =0 
+    y100=[]
+    Fs100
+    y2=[]
+    Fs2
+    ga
+    y3=[]
+    Fs3
+    y4=[]
+    Fs4
+    y5=[]
+    Fs5
+    y6=[]
+    Fs6
+    y7=[]
+    Fs7
+    y8=[]
+    Fs8
+    y9=[]
+    Fs9
+    y10=[]
+    Fs10
+    y11=[]
+    y12=[]
+    Fs11
+    Fs12
+    y13=[]
+    Fs13
+    y14=[]
+    Fs14
+    file
+    path
+    y15=[]
+    Fs15
+    gain 
+    end  
+    
+    
+    
+    
+    methods (Access = private)
+        
+        function initializeUIComponents(app)
+            % Create the main UI figure
+            app.UIFigure = uifigure('Position', [100 100 600 400], 'Name', 'Audio Effect Processor');
+
+            % Create Equalizer Button
+            app.EqualizerButton = uibutton(app.UIFigure, 'push');
+            app.EqualizerButton.Position = [200 200 100 40];
+            app.EqualizerButton.Text = 'Equalizer';
+            app.EqualizerButton.ButtonPushedFcn = @app.EqualizerButtonPushed;
+        end
+        function gain = EqualizerPopup(app)
+            % Create the pop-up figure
+            popupFig = uifigure('Position', [100 100 400 600], 'Name', 'Equalizer Settings');
+
+            % Define the number of sliders
+            numSliders = 9;
+            sliders = gobjects(1, numSliders);
+            gainLabels = [">85 Hz", "280 Hz", "450 Hz", "1 kHz", "3 kHz", ...
+                          "6 kHz", "10 kHz", "13 kHz", "16< kHz"];
+            gain = zeros(1, numSliders);
+
+            % Create sliders and labels
+            for i = 1:numSliders
+                % Slider label
+                uilabel(popupFig, 'Position', [50 600-(i*50) 100 13], 'Text', gainLabels(i));
+
+                % Slider for each frequency band
+                sliders(i) = uislider(popupFig, 'Position', [150 600-(i*50) 200 3], ...
+                                      'Limits', [-25 25], 'Value', 0);  % Gain range [-12, 12] dB
+            end
+
+            % Create Confirm button
+            confirmButton = uibutton(popupFig, 'push', 'Position', [150 50 100 30], 'Text', 'Confirm');
+
+            % Button callback function to store slider values
+            confirmButton.ButtonPushedFcn = @(src, event) confirmCallback();
+
+            % Wait for user input and resume
+            uiwait(popupFig);
+
+            % Nested function to handle confirm button
+            function confirmCallback()
+                for j = 1:numSliders
+                    gain(j) = sliders(j).Value;  % Store slider values into gain array
+                end
+                % Resume execution and close the pop-up
+                uiresume(popupFig);
+                close(popupFig);
+            end
+        end
+        % Constructor
+        function app = AudioEffectProcessorApp
+            % Call the renamed UI component initialization function
+            initializeUIComponents(app);
+        end
+        
+    end
+    
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Button pushed function: PlayOriginalAudioButton
+        function PlayOriginalAudioButtonPushed(app, event)
+            
+           sound(app.y,app.Fs);
+        end
+
+        % Button pushed function: ApplyEffectButton
+        function ApplyEffectButtonPushed(app, event)
+
+            if app.k==1
+                app.y0 = app.y1;            
+                app.Fs0 = app.Fs1; 
+            end
+            if app.k==2
+                app.y0 = app.y2;             
+                app.Fs0 = app.Fs2;
+            end
+            if app.k==3
+                app.y0 = app.y3;             
+                app.Fs0 = app.Fs3;
+            end
+            if app.k==4
+                app.y0 = app.y4;             
+                app.Fs0 = app.Fs4;
+            end
+            if app.k==5
+                app.y0 = app.y5;             
+                app.Fs0 = app.Fs5;
+            end
+            if app.k==6
+                app.y0 = app.y6;             
+                app.Fs0 = app.Fs6;
+            end
+            if app.k==7
+                app.y0 = app.y7;             
+                app.Fs0 = app.Fs7;
+            end
+            if app.k==8
+               app.y0 = app.y8;             
+               app.Fs0 = app.Fs8;
+            end
+            if app.k==9
+               app.y0 = app.y9;             
+               app.Fs0 = app.Fs9;
+            end
+            if app.k==10
+               app.y0 = app.y10;             
+               app.Fs0 = app.Fs10;
+            end
+            if app.k==11
+               app.y0 = app.y11;             
+               app.Fs0 = app.Fs11;
+            end
+            if app.k==12
+               app.y0 = app.y12;             
+               app.Fs0 = app.Fs12;
+            end
+            if app.k==13
+               app.y0 = app.y13;             
+               app.Fs0 = app.Fs13;
+            end
+            if app.k==14
+               app.y0 = app.y14;             
+               app.Fs0 = app.Fs14;
+            end
+            if app.k==15
+               app.y0 = app.y15;             
+               app.Fs0 = app.Fs15;
+            end
+            plot(app.UIAxes2, (0:length(app.y0)-1)/app.Fs0, app.y0);
+            title(app.UIAxes2, 'Output Signal');
+            xlabel(app.UIAxes2, 'Time (s)');
+            ylabel(app.UIAxes2, 'Amplitude');  
+         
+        end
+
+        % Button pushed function: PlayProcessedAudioButton
+        function PlayProcessedAudioButtonPushed(app, event)
+         
+           sound(app.y0,app.Fs0);
+           
+        end
+
+        % Button pushed function: ResetButton
+        function ResetButtonPushed(app, event)
+            app.k=0;
+            cla(app.UIAxes2);
+            clear sound;
+            
+        end
+
+        % Button pushed function: SaveProcessedAudioButton
+        function SaveProcessedAudioButtonPushed(app, event)
+            audiowrite('Output Audio.wav', app.y0, app.Fs0);
+        end
+
+        % Button pushed function: BrowseButton
+        function BrowseButtonPushed(app, event)
+             % Open file browser to select a file
+            [app.file, app.path] = uigetfile({'*.*', 'All Files'; '*.wav', 'Audio Files (*.wav)'; '*.mp3', 'MP3 Files (*.mp3)'}, 'Select an Audio File');
+    
+            % If the user did not cancel the dialog
+            if isequal(app.file, 0)
+                 % Optionally update a label in the app rather than using disp
+                 app.f_name.Value = 'No file selected';  % Or keep this field empty
+            else
+                 % Get the full file path
+                 selectedFile = fullfile(app.path, app.file);
+        
+                % Display the file name in the text field (FileNameEditField)
+                app.f_name.Value = selectedFile;
+            end
+            [app.y, app.Fs] = audioread(selectedFile);
+        end
+
+        % Button pushed function: GainButton
+        function GainButtonPushed(app, event)
+        if app.k==0
+            app.y = app.y;             
+            app.Fs = app.Fs;
+        end
+        if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+        end
+        if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+        end
+        if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+        end
+        if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+        end
+        if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+        end
+        if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+        end
+        if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+        end
+        if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+        end
+        if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+        end
+        if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+        end
+        if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+        end
+        if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+        end
+        if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+        end
+            prompt = {'Enter multiplying factor (0.2 to 4 times)?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            gainValue = str2double(userInputStr{1});
+            app.k=1;
+            while true
+                
+                if gainValue > 0.1 && gainValue < 5
+                   
+                   break
+                else
+                    prompt = {'Enter valid multiplying factor (0.2 to 4 times)?'};
+                    dlgTitle = 'Input';
+                    numLines = 1;
+                    userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            gainValue = str2double(userInputStr{1});
+                end
+            end
+            % Attempt to calculate gain
+            try
+            app.ga = gainValue * app.y; % This should work
+            catch ME
+            disp('Error during multiplication:');
+            disp(ME.message);
+            end
+            app.y1 = app.ga;             % Save the modified audio data
+            app.Fs1 = app.Fs;
+
+        end
+
+        % Button pushed function: TrimButton
+        function TrimButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            prompt = {'Enter starting time (seconds)'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            app.k=2;
+            % Convert input to numeric
+            st = str2double(userInputStr{1});
+            
+            
+            prompt = {'Enter ending time (seconds)'};
+            dlgTitle2 = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle2, numLines);
+
+            % Convert input to numeric
+            ct = str2double(userInputStr{1});
+            
+            if st < 0 || ct < 0
+                error('Start and end times cannot be negative.');
+            end
+            if st >= ct
+                error('End time must be greater than start time.');
+            end
+            
+            stSample = round(st * app.Fs);
+            ctSample = round(ct * app.Fs);
+
+            if stSample < 1
+                stSample = 1;
+            end
+            if ctSample > length(app.y)
+                ctSample = length(app.y);
+            end
+            app.y2 = app.y(stSample:ctSample, :);
+            app.Fs2=app.Fs;
+          
+        end
+
+        % Button pushed function: ReverseButton
+        function ReverseButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=3;
+            app.y3 = flipud(app.y);
+            app.Fs3=app.Fs;
+           
+        end
+
+        % Button pushed function: FadeInButton
+        function FadeInButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            nsamples = length(app.y);
+            app.k=4;
+            prompt = {'Enter percentage of signal you want to be fade in?(0 to 100)'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            x = str2double(userInputStr{1});
+            if x<0 || x>100
+               error('percentage must be in 0 to 100');
+            end
+            gradin = round(nsamples*(x/100));
+            T = nsamples / app.Fs;
+
+            fadein = [linspace(0, 1,gradin), ones(1, nsamples - gradin)]';
+
+            if size(app.y, 2) > 1
+               fadein = [fadein, fadein]; 
+            end
+            app.y4 = app.y .* fadein;
+            app.Fs4=app.Fs;
+            
+        end
+
+        % Button pushed function: FadeOutButton
+        function FadeOutButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            nsamples = length(app.y);
+            app.k=5;
+            prompt = {'Enter percentage of signal you want to be fade out?(0 to 100)'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            x = str2double(userInputStr{1});
+            if x<0 || x>100
+               error('percentage must be in 0 to 100');
+            end
+            gradin = round(nsamples*(x/100));
+            T = nsamples /app.Fs;
+            fadeout = [linspace(1, 0,gradin), zeros(1, nsamples - gradin)]';
+
+            if size(app.y, 2) > 1
+               fadeout = [fadeout, fadeout]; 
+            end
+            app.y5 = app.y .* fadeout;
+            app.Fs5=app.Fs;
+          
+        end
+
+        % Button pushed function: ShowOriginalGraphButton
+        function ShowOriginalGraphButtonPushed(app, event)
+
+          plot(app.UIAxes, (0:length(app.y)-1)/app.Fs, app.y);
+          title(app.UIAxes, 'Input Signal');
+          xlabel(app.UIAxes, 'Time (s)');
+          ylabel(app.UIAxes, 'Amplitude'); 
+        end
+
+        % Button pushed function: SpeedUpDownButton
+        function SpeedUpDownButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=6;
+            prompt = {'Enter speedup multiflying factor from .2x to 4x:'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            inp = str2double(userInputStr{1});
+            if inp < .2 || inp > 4
+               error('Multiflying factor must be in 1x to 4x.');
+            end
+
+            app.Fs6 = app.Fs * inp;
+            app.y6=app.y;
+        end
+
+        % Button pushed function: EchoButton
+        function EchoButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=7;
+            prompt = {'Enter delay time for echo 0 to 0.5: '};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+           delayTime = str2double(userInputStr{1});
+            if (delayTime>0.5 || delayTime<0)
+               error('Delay time must be in 0 to 0.5.');
+            end
+            feedback = 0.5; 
+            mix = 0.5;
+            delaySamples = round(delayTime * app.Fs);
+            Buffer = zeros(size(app.y, 1) + delaySamples, size(app.y, 2));
+            for n = 1:size(app.y, 1)
+                Buffer(n + delaySamples, :) = app.y(n, :) + feedback * Buffer(n, :);
+            end
+            app.y7 = (1 - mix) * app.y + mix * Buffer(1:size(app.y, 1), :);
+            app.Fs7 = app.Fs;
+        end
+
+        % Button pushed function: DelayButton
+        function DelayButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=8;
+            prompt = {'Enter delay time 1 to 4:'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+           delayTime = str2double(userInputStr{1});
+           if delayTime>1 && delayTime<0
+              error('Delay time must be in 0 to 6.');
+           end
+           feedback = 0.75; 
+           mix = 0.75;
+           delaySamples = round(delayTime * app.Fs);
+           Buffer = zeros(size(app.y, 1) + delaySamples, size(app.y, 2));
+           for n = 1:size(app.y, 1)
+               Buffer(n + delaySamples, :) = app.y(n, :) + feedback * Buffer(n, :);
+           end
+           app.y8 = (1 - mix) * app.y + mix * Buffer(1:size(app.y, 1), :);
+           app.Fs8 = app.Fs;
+        end
+
+        % Button pushed function: ReverbButton
+        function ReverbButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=9;
+            prompt = {'Enter wet % (0 to 100) :'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+           inp = str2double(userInputStr{1});
+           if inp < 0 || inp > 100 
+               error('limit is 0 to 100 times.'); 
+           end 
+           wet = inp/100;
+           r = reverberator('SampleRate', app.Fs, ... 
+    'PreDelay', 1, ...                 
+    'WetDryMix', wet, ...              
+    'HighFrequencyDamping', 0.5); 
+ 
+           app.y9 = r(app.y); 
+           app.Fs9 = app.Fs;
+        end
+
+        % Button pushed function: ChorusButton
+        function ChorusButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=10;
+            numVoices = 7;
+            prompt = {'delaytime 0 to 0.3 : '};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            delayT = str2double(userInputStr{1});
+            if delayT < 0 || delayT > 0.3
+               error('limit is 0 to 0.3 ');
+            end
+            depth = 0.005; 
+            rate = 0.5;
+            prompt = {'feedbackgain 0 to 1 : '};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            feedbackgain = str2double(userInputStr{1});
+            if feedbackgain < 0 || feedbackgain > 1
+               error('limit is 0-1 ');
+            end
+            app.y10 = zeros(size(app.y));
+            t = (0:length(app.y)-1) / app.Fs; 
+            modulation = depth * sin(2 * pi * rate * t);
+            for i = 1:numVoices
+                currentDelayTime = delayT +modulation; 
+                currentDelaySamples = round(currentDelayTime * app.Fs); 
+
+                delayedS = zeros(size(app.y));
+                for n = 1:length(app.y)
+       
+                    d = n - currentDelaySamples(n);
+                    if d > 0
+                       delayedS(n) = app.y(n) + feedbackgain * app.y(d);
+                    else
+                    delayedS(n) = app.y(n); 
+                    end
+                end
+                
+                app.y10 = app.y10 + delayedS; 
+           end
+           app.y10 = app.y10 / max(abs(app.y10));
+           app.Fs10 = app.Fs;
+        end
+
+        % Button pushed function: PitchShiftingButton
+        function PitchShiftingButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=11;
+            prompt = {'Enter nSemitones from -8 to 8 (Positive means deep, low frequency ' ... 
+    'and Negative means high frequency):'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            nSemitones = str2double(userInputStr{1});
+            if nSemitones < -8 || nSemitones > 8 
+               error('Limit is -8 to +8'); 
+            end  
+            shiftFactor = 2^((-nSemitones)/12); 
+            app.y11 = resample(app.y, round(app.Fs * shiftFactor), app.Fs);
+            app.Fs11 = app.Fs;
+        end
+
+        % Button pushed function: CompressorButton
+        function CompressorButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=12;
+            prompt = {'Enter threshold -100 to 0 dB?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            threshold = str2double(userInputStr{1});
+            
+            prompt = {'Enter ratio 1 to 20?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            ratio = str2double(userInputStr{1});
+            
+            prompt = {'Enter makeup 1 to 10?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            makeupgain = str2double(userInputStr{1});
+            
+            prompt = {'Enter attackTime 0 to 1?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            attacktime = str2double(userInputStr{1});
+            
+            prompt = {'Enter releaseTime 0 to 1?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            releasetime = str2double(userInputStr{1});
+            if threshold >= 0 || threshold <= -100
+               error('Enter threshold between 0 to -100 dB.');
+            end
+            if ratio < 1 || ratio > 20
+               error('Enter ratio between 1 to 20.');
+            end
+            if makeupgain < 1 || makeupgain > 10
+               error('Enter makeup gain between 1 to 10.');
+            end
+            if attacktime < 0 || attacktime > 1
+               error('Enter attackTime between 0 to 1.');
+            end
+            if releasetime < 0 || releasetime > 1
+               error('Enter releaseTime between 0 to 1.');
+            end
+
+            thresholdLin = 10^(threshold / 20);
+            makeupgainLin = 10^(makeupgain / 20);
+            attackSamples = round(attacktime * app.Fs);
+            releaseSamples = round(releasetime * app.Fs);
+            app.y12 = zeros(size(app.y));
+
+
+           for channel = 1:size(app.y, 2) 
+               gainEn = 1;
+               for n = 1:length(app.y)
+                   inputLevel = abs(app.y(n, channel)); 
+                   if inputLevel > thresholdLin
+                      gainReduct = 1 / ratio + (1 - 1 / ratio) * (thresholdLin / inputLevel);
+                   else
+                      gainReduct = 1; 
+                   end
+                   if gainReduct < gainEn
+                      gainEn = gainEn + (gainReduct - gainEn) / attackSamples;
+                   else
+                      gainEn = gainEn + (gainReduct - gainEn) / releaseSamples;
+                   end
+                   app.y12(n, channel) = app.y(n, channel) * gainEn;
+              end
+           end
+           app.y12 = app.y12 * makeupgainLin;
+           app.y12 = min(max(app.y12, -1), 1);
+           app.Fs12 = app.Fs;
+        end
+
+        % Button pushed function: NormalizeButton
+        function NormalizeButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            app.k=13;
+            peak = max(abs(app.y));
+            prompt = {'Enter level peak?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            level = str2double(userInputStr{1});
+            app.y13 = (app.y / peak) * level;
+            app.Fs13 = app.Fs;
+        end
+
+        % Button pushed function: DistortionButton
+        function DistortionButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            app.k=14;
+            prompt = {'Enter amplifying factor?'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            g = str2double(userInputStr{1});
+            threshold = 0.09;  
+
+            app.y14 = g * app.y;
+
+            app.y14(app.y14 > threshold) = threshold; 
+            app.y14(app.y14 < -threshold) = -threshold; 
+            app.y14 = app.y14 / max(abs(app.y14));
+            app.Fs14 = app.Fs;
+        end
+
+        % Value changed function: f_name
+        function f_nameValueChanged(app, event)
+            value = app.f_name.Value;
+            
+        end
+
+        % Button pushed function: EqualizerButton
+        function EqualizerButtonPushed(app, event)
+            if app.k==0
+               app.y = app.y;             
+               app.Fs = app.Fs;
+            end
+            if app.k==1
+               app.y = app.ga;             
+               app.Fs = app.Fs;
+            end
+            if app.k==2
+               app.y = app.y2;             
+               app.Fs = app.Fs2;
+            end
+            if app.k==3
+               app.y = app.y3;             
+               app.Fs = app.Fs3;
+            end
+            if app.k==4
+               app.y = app.y4;             
+               app.Fs = app.Fs4;
+            end 
+            if app.k==5
+               app.y = app.y5;             
+               app.Fs = app.Fs5;
+            end
+            if app.k==6
+               app.y = app.y6;             
+               app.Fs = app.Fs6;
+            end
+            if app.k==7
+               app.y = app.y7;             
+               app.Fs = app.Fs7;
+            end
+            if app.k==8
+               app.y = app.y8;             
+               app.Fs = app.Fs8;
+            end
+            if app.k==9
+               app.y = app.y9;             
+               app.Fs = app.Fs9;
+            end
+            if app.k==10
+               app.y = app.y10;             
+               app.Fs = app.Fs10;
+            end
+            if app.k==11
+               app.y = app.y11;             
+               app.Fs = app.Fs11;
+            end
+            if app.k==12
+               app.y = app.y12;             
+               app.Fs = app.Fs12;
+            end
+            if app.k==13
+               app.y = app.y13;             
+               app.Fs = app.Fs13;
+            end
+            if app.k==14
+               app.y = app.y14;             
+               app.Fs = app.Fs14;
+            end
+            x=app.y;
+            app.k=15;
+            load('filters.mat');
+            prompt = {'Enter 1 for own preference, 2 for Old Radio, and 3 for Lo-Fi Effect:'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            inp = str2double(userInputStr{1});
+            
+            while true
+                
+                if inp == 1 || inp ==2 || inp==3
+                   
+                   break
+                else
+                    prompt = {'Enter 1 for own preference, 2 for Old Radio, and 3 for Lo-Fi Effect:'};
+                    dlgTitle = 'Input';
+                    numLines = 1;
+                    userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            inp = str2double(userInputStr{1});
+                end
+            end
+            if inp==1
+             % Open the pop-up window and store the slider values in 'gain'
+            app.gain = EqualizerPopup(app);
+            disp('Equalizer gain values stored:');
+            disp(app.gain);
+            
+            prompt = {'Enter 1 for IIR'};
+            dlgTitle = 'Input';
+            numLines = 1;
+            userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            filter_type = str2double(userInputStr{1});
+            
+            while true
+                
+                if filter_type == 1 
+                   
+                   break
+                else
+                    prompt = {'Enter 1 for IIR'};
+                    dlgTitle = 'Input';
+                    numLines = 1;
+                    userInputStr = inputdlg(prompt, dlgTitle, numLines);
+
+            % Convert input to numeric
+            filter_type = str2double(userInputStr{1});
+                end
+            end
+            end
+
+          if inp== 2
+disp('Old Radio');
+app.gain(1) = -22 ;
+app.gain(2) = -18;
+app.gain(3) = -10;
+app.gain(4) = 0;
+app.gain(5) = 8;
+app.gain(6) = 10;
+app.gain(7) = -8;
+app.gain(8) = -15;
+app.gain(9) = -25;
+filter_type = 1;
+end
+
+if inp== 3
+disp('Lo-Fi');
+app.gain(1) = -15 ;
+app.gain(2) = 0;
+app.gain(3) = 2;
+app.gain(4) = 0;
+app.gain(5) = 4;
+app.gain(6) = 4;
+app.gain(7) = -1;
+app.gain(8) = -6;
+app.gain(9) = -8;
+filter_type = 1;
+end
+
+if filter_type == 1
+    y111 = filter(iir1, x) .* db2mag(app.gain(1));
+    y211 = filter(iir2, x) .* db2mag(app.gain(2));
+    y311 = filter(iir3, x) .* db2mag(app.gain(3));
+    y411 = filter(iir4, x) .* db2mag(app.gain(4));
+    y511 = filter(iir5, x) .* db2mag(app.gain(5));
+    y611 = filter(iir6, x) .* db2mag(app.gain(6));
+    y711 = filter(iir7, x) .* db2mag(app.gain(7));
+    y811 = filter(iir8, x) .* db2mag(app.gain(8));
+    y911 = filter(iir9, x) .* db2mag(app.gain(9));
+    
+    else
+    y111 = filter(fir1, x) .* db2mag(app.gain(1));
+    y211 = filter(fir2, x) .* db2mag(app.gain(2));
+    y311 = filter(fir3, x) .* db2mag(app.gain(3));
+    y411 = filter(fir4, x) .* db2mag(app.gain(4));
+    y511 = filter(fir5, x) .* db2mag(app.gain(5));
+    y611 = filter(fir6, x) .* db2mag(app.gain(6));
+    y711 = filter(fir7, x) .* db2mag(app.gain(7));
+    y811 = filter(fir8, x) .* db2mag(app.gain(8));
+    y911 = filter(fir9, x) .* db2mag(app.gain(9));
+end
+
+
+app.y15 = y111 + y211 + y311 + y411 + y511 + y611+ y711 + y811 + y911;
+t = (0:length(x)-1) / app.Fs;
+app.Fs15=app.Fs;
+
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure and hide until all components are created
+            app.UIFigure = uifigure('Visible', 'off');
+            app.UIFigure.Color = [0.902 0.902 0.902];
+            app.UIFigure.Position = [100 100 959 542];
+            app.UIFigure.Name = 'UI Figure';
+
+            % Create title
+            app.title = uieditfield(app.UIFigure, 'text');
+            app.title.HorizontalAlignment = 'center';
+            app.title.FontSize = 22;
+            app.title.FontWeight = 'bold';
+            app.title.FontColor = [1 1 1];
+            app.title.BackgroundColor = [0 0 0];
+            app.title.Position = [16 494 918 31];
+            app.title.Value = 'Audio Effect Processor';
+
+            % Create file_name
+            app.file_name = uieditfield(app.UIFigure, 'text');
+            app.file_name.HorizontalAlignment = 'center';
+            app.file_name.Position = [16 454 66 22];
+            app.file_name.Value = 'File Name';
+
+            % Create f_name
+            app.f_name = uieditfield(app.UIFigure, 'text');
+            app.f_name.ValueChangedFcn = createCallbackFcn(app, @f_nameValueChanged, true);
+            app.f_name.Position = [91 454 200 22];
+
+            % Create BrowseButton
+            app.BrowseButton = uibutton(app.UIFigure, 'push');
+            app.BrowseButton.ButtonPushedFcn = createCallbackFcn(app, @BrowseButtonPushed, true);
+            app.BrowseButton.Position = [299 454 57 22];
+            app.BrowseButton.Text = 'Browse';
+
+            % Create PlayOriginalAudioButton
+            app.PlayOriginalAudioButton = uibutton(app.UIFigure, 'push');
+            app.PlayOriginalAudioButton.ButtonPushedFcn = createCallbackFcn(app, @PlayOriginalAudioButtonPushed, true);
+            app.PlayOriginalAudioButton.BackgroundColor = [0 0 0];
+            app.PlayOriginalAudioButton.FontColor = [1 1 1];
+            app.PlayOriginalAudioButton.Position = [205 203 145 22];
+            app.PlayOriginalAudioButton.Text = 'Play Original Audio';
+
+            % Create ApplyEffectButton
+            app.ApplyEffectButton = uibutton(app.UIFigure, 'push');
+            app.ApplyEffectButton.ButtonPushedFcn = createCallbackFcn(app, @ApplyEffectButtonPushed, true);
+            app.ApplyEffectButton.BackgroundColor = [0 0 0];
+            app.ApplyEffectButton.FontColor = [1 1 1];
+            app.ApplyEffectButton.Position = [12 152 140 22];
+            app.ApplyEffectButton.Text = 'Apply Effect';
+
+            % Create PlayProcessedAudioButton
+            app.PlayProcessedAudioButton = uibutton(app.UIFigure, 'push');
+            app.PlayProcessedAudioButton.ButtonPushedFcn = createCallbackFcn(app, @PlayProcessedAudioButtonPushed, true);
+            app.PlayProcessedAudioButton.BackgroundColor = [0 0 0];
+            app.PlayProcessedAudioButton.FontColor = [1 1 1];
+            app.PlayProcessedAudioButton.Position = [205 152 143 22];
+            app.PlayProcessedAudioButton.Text = 'Play Processed Audio';
+
+            % Create ResetButton
+            app.ResetButton = uibutton(app.UIFigure, 'push');
+            app.ResetButton.ButtonPushedFcn = createCallbackFcn(app, @ResetButtonPushed, true);
+            app.ResetButton.BackgroundColor = [0 0 0];
+            app.ResetButton.FontColor = [1 1 1];
+            app.ResetButton.Position = [11 98 139 22];
+            app.ResetButton.Text = 'Reset';
+
+            % Create SaveProcessedAudioButton
+            app.SaveProcessedAudioButton = uibutton(app.UIFigure, 'push');
+            app.SaveProcessedAudioButton.ButtonPushedFcn = createCallbackFcn(app, @SaveProcessedAudioButtonPushed, true);
+            app.SaveProcessedAudioButton.BackgroundColor = [0 0 0];
+            app.SaveProcessedAudioButton.FontColor = [1 1 1];
+            app.SaveProcessedAudioButton.Position = [205 99 140 22];
+            app.SaveProcessedAudioButton.Text = 'Save Processed Audio';
+
+            % Create UIAxes
+            app.UIAxes = uiaxes(app.UIFigure);
+            title(app.UIAxes, 'Title')
+            xlabel(app.UIAxes, 'X')
+            ylabel(app.UIAxes, 'Y')
+            app.UIAxes.Position = [383 268 551 208];
+
+            % Create UIAxes2
+            app.UIAxes2 = uiaxes(app.UIFigure);
+            title(app.UIAxes2, 'Title')
+            xlabel(app.UIAxes2, 'X')
+            ylabel(app.UIAxes2, 'Y')
+            app.UIAxes2.Position = [384 24 550 215];
+
+            % Create EditField
+            app.EditField = uieditfield(app.UIFigure, 'text');
+            app.EditField.Position = [16 420 340 22];
+            app.EditField.Value = '                                              Effects';
+
+            % Create GainButton
+            app.GainButton = uibutton(app.UIFigure, 'push');
+            app.GainButton.ButtonPushedFcn = createCallbackFcn(app, @GainButtonPushed, true);
+            app.GainButton.Position = [16 386 100 22];
+            app.GainButton.Text = 'Gain';
+
+            % Create TrimButton
+            app.TrimButton = uibutton(app.UIFigure, 'push');
+            app.TrimButton.ButtonPushedFcn = createCallbackFcn(app, @TrimButtonPushed, true);
+            app.TrimButton.Position = [137 386 100 22];
+            app.TrimButton.Text = 'Trim';
+
+            % Create FadeInButton
+            app.FadeInButton = uibutton(app.UIFigure, 'push');
+            app.FadeInButton.ButtonPushedFcn = createCallbackFcn(app, @FadeInButtonPushed, true);
+            app.FadeInButton.Position = [256 386 100 22];
+            app.FadeInButton.Text = 'Fade In';
+
+            % Create FadeOutButton
+            app.FadeOutButton = uibutton(app.UIFigure, 'push');
+            app.FadeOutButton.ButtonPushedFcn = createCallbackFcn(app, @FadeOutButtonPushed, true);
+            app.FadeOutButton.Position = [16 361 100 22];
+            app.FadeOutButton.Text = 'Fade Out';
+
+            % Create ReverseButton
+            app.ReverseButton = uibutton(app.UIFigure, 'push');
+            app.ReverseButton.ButtonPushedFcn = createCallbackFcn(app, @ReverseButtonPushed, true);
+            app.ReverseButton.Position = [137 360 100 22];
+            app.ReverseButton.Text = 'Reverse';
+
+            % Create SpeedUpDownButton
+            app.SpeedUpDownButton = uibutton(app.UIFigure, 'push');
+            app.SpeedUpDownButton.ButtonPushedFcn = createCallbackFcn(app, @SpeedUpDownButtonPushed, true);
+            app.SpeedUpDownButton.Position = [254.5 360 103 22];
+            app.SpeedUpDownButton.Text = 'Speed Up/Down';
+
+            % Create CompressorButton
+            app.CompressorButton = uibutton(app.UIFigure, 'push');
+            app.CompressorButton.ButtonPushedFcn = createCallbackFcn(app, @CompressorButtonPushed, true);
+            app.CompressorButton.Position = [15 335 100 22];
+            app.CompressorButton.Text = 'Compressor';
+
+            % Create DistortionButton
+            app.DistortionButton = uibutton(app.UIFigure, 'push');
+            app.DistortionButton.ButtonPushedFcn = createCallbackFcn(app, @DistortionButtonPushed, true);
+            app.DistortionButton.Position = [136 335 100 22];
+            app.DistortionButton.Text = 'Distortion';
+
+            % Create NormalizeButton
+            app.NormalizeButton = uibutton(app.UIFigure, 'push');
+            app.NormalizeButton.ButtonPushedFcn = createCallbackFcn(app, @NormalizeButtonPushed, true);
+            app.NormalizeButton.Position = [255 335 100 22];
+            app.NormalizeButton.Text = 'Normalize';
+
+            % Create ReverbButton
+            app.ReverbButton = uibutton(app.UIFigure, 'push');
+            app.ReverbButton.ButtonPushedFcn = createCallbackFcn(app, @ReverbButtonPushed, true);
+            app.ReverbButton.Position = [15 309 100 22];
+            app.ReverbButton.Text = 'Reverb';
+
+            % Create EchoButton
+            app.EchoButton = uibutton(app.UIFigure, 'push');
+            app.EchoButton.ButtonPushedFcn = createCallbackFcn(app, @EchoButtonPushed, true);
+            app.EchoButton.Position = [136 309 100 22];
+            app.EchoButton.Text = 'Echo';
+
+            % Create DelayButton
+            app.DelayButton = uibutton(app.UIFigure, 'push');
+            app.DelayButton.ButtonPushedFcn = createCallbackFcn(app, @DelayButtonPushed, true);
+            app.DelayButton.Position = [255 309 100 22];
+            app.DelayButton.Text = 'Delay';
+
+            % Create ChorusButton
+            app.ChorusButton = uibutton(app.UIFigure, 'push');
+            app.ChorusButton.ButtonPushedFcn = createCallbackFcn(app, @ChorusButtonPushed, true);
+            app.ChorusButton.Position = [16 284 100 22];
+            app.ChorusButton.Text = 'Chorus';
+
+            % Create PitchShiftingButton
+            app.PitchShiftingButton = uibutton(app.UIFigure, 'push');
+            app.PitchShiftingButton.ButtonPushedFcn = createCallbackFcn(app, @PitchShiftingButtonPushed, true);
+            app.PitchShiftingButton.Position = [254 284 100 22];
+            app.PitchShiftingButton.Text = 'Pitch Shifting';
+
+            % Create ShowOriginalGraphButton
+            app.ShowOriginalGraphButton = uibutton(app.UIFigure, 'push');
+            app.ShowOriginalGraphButton.ButtonPushedFcn = createCallbackFcn(app, @ShowOriginalGraphButtonPushed, true);
+            app.ShowOriginalGraphButton.BackgroundColor = [0 0 0];
+            app.ShowOriginalGraphButton.FontColor = [1 1 1];
+            app.ShowOriginalGraphButton.Position = [13 202 135 22];
+            app.ShowOriginalGraphButton.Text = 'Show Original Graph';
+
+            % Create EqualizerButton
+            app.EqualizerButton = uibutton(app.UIFigure, 'push');
+            app.EqualizerButton.ButtonPushedFcn = createCallbackFcn(app, @EqualizerButtonPushed, true);
+            app.EqualizerButton.Position = [134 282 100 22];
+            app.EqualizerButton.Text = 'Equalizer';
+
+            % Show the figure after all components are created
+            app.UIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = App_c
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end
