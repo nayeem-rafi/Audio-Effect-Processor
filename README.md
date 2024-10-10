@@ -1,5 +1,5 @@
 # Audio Effect Processor
-By [Naimur Rahman](https://github.com/nayeem-rafi), [Md. Nayon Khan](https://github.com/nayon045), [Shuvom Karmakar](https://github.com/suvom027).
+By [Naimur Rahman](https://github.com/nayeem-rafi), [Md. Nayon Khan](https://github.com/nayon045), [Suvom Karmakar](https://github.com/suvom027).
 ## Abstract
 This project report documents the design and implementation of an Audio Effects
 Processor using MATLAB, focusing on providing real-time manipulation of audio
@@ -42,9 +42,9 @@ volume.
 We gave a limit of 0 to 4 times for gain. Below one for lowering the sound and more
 than one to boost the sound. We had keep the limit because more than 4 times gain
 can cause distortion in audio. Below a sample of input and output is given where
-first we gave input 2x boost and then we gave 0.5x. We find out our gaining effect is
+first we gave input 2x boost. We find out our gaining effect is
 perfectly working from amplitude analysis of the signal.
-<p align="left">
+<p align="center">
 <img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="720">
 </p>
 ### Trimming
