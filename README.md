@@ -353,7 +353,7 @@ graph by look over x axis.
 </h2>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/f3e73999-5212-4bc9-a4e5-7aa8334da430", width="520">
+<img src="https://github.com/user-attachments/assets/f3e73999-5212-4bc9-a4e5-7aa8334da430", width="620">
 </p>
 
 <h2 align= "center">
