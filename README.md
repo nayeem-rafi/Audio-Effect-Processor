@@ -355,5 +355,4 @@ offers a valuable tool for audio enthusiasts and professionals. Future work coul
 focus on optimizing the system for real-time processing and extending its capabilities
 with more advanced effects.
 
-## Open Source: Project Details & Videos
-[CLICK](https://drive.google.com/drive/folders/1DnzlJkw3hlO5iq0watlQuw7EBvpG2Dsl?usp=drive_link)
+## Open Source: Project Details & Videos [CLICK](https://drive.google.com/drive/folders/1DnzlJkw3hlO5iq0watlQuw7EBvpG2Dsl?usp=drive_link)
