@@ -67,6 +67,10 @@ Interface significantly improves the accessibility of our system, catering to bo
 • **Can save the audio**  
 
 • **Can apply multiple effects over one audio**
+<h1 align= "center">
+
+**App Interface**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/c20c9456-8fa6-40fd-bbc6-5c1bb6bed35c", width="720">
 </p>
@@ -86,6 +90,10 @@ than one to boost the sound. We had keep the limit because more than 4 times gai
 can cause distortion in audio. Below a sample of input and output is given where
 first we gave input 2x boost. We find out our gaining effect is
 perfectly working from amplitude analysis of the signal.
+<h1 align= "center">
+
+**Gain**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="520">
 </p>
@@ -100,7 +108,12 @@ audio write that portion in a new signal variable.
 We make a limit in input like if user put end point time second larger than audio
 signal than we had convert it to the end time. Here in this sample we choose to test it
 by trimming 3 to 6 sec portion where from graph we got to know that it is working.
-X-axis difference is because original and trimmed one respectively in 105and104.
+X-axis difference is because original and trimmed one respectively in 10ˆ5 and 10ˆ4.
+<h1 align= "center">
+
+**Trim**
+</h1>
+
 <p align="center">
 <img src="https://github.com/user-attachments/assets/7e20b060-afb0-4c29-b3a3-7a73c6a0a43f", width="520">
 </p>
@@ -115,6 +128,10 @@ the amplitude to maximum.
 #### Input and output Analysis
 Here user can choose how much percentage of the audio will be affected by fade-in
 effect. For example, here we choose 70 percent of our audio would be faded in.
+<h1 align= "center">
+
+**Fade In**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/f20ac608-6a1b-444f-8cd6-511086672d6d", width="520">
 </p>
@@ -128,6 +145,10 @@ A linear ramp is applied to the end of the audio signal, reducing the amplitude 
 #### Input and output Analysis
 Here user can choose how much percentage of the audio will be affected by fade-out
 effect. For example, here we choose 90 percent of our audio would be faded out.
+<h1 align= "center">
+
+**Fade Out**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/6f5a9008-cc91-41cb-b7ad-fb1eff960e72", width="520">
 </p>
@@ -140,6 +161,10 @@ A matlab function ”flipud” used to flip the audio and play from the backward
 #### Input and output Analysis
 Audio will be reversed like one to ten counting audio will be reversed, ten to one but
 ten will be spelled as reversed ”net” and one will be ”eno”. Here is the sample output.
+<h1 align= "center">
+
+**Reverse**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/26807570-6777-4cdc-bb18-5c9191fb9cb4", width="520">
 </p>
@@ -154,6 +179,10 @@ without altering pitch.
 User can chose how much faster they want the audio to be. They can choose between
 1 to 4 times. From the graph we can’t analyse this effect. If signal plotted with time
 it can be inspected.
+<h1 align= "center">
+
+**Speed Up**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/f064e997-256f-4cde-9edc-010852af75da", width="520">
 </p>
@@ -175,6 +204,10 @@ threshold and The release time refers to how quickly the compressor stops compre
 #### Input and output Analysis
 Here as a sample input threshold set to -85dB, attacktime 0.1s,releasetime
 0.01s,makeupgain 1 and ratio 5.
+<h1 align= "center">
+
+**Compressor**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/03520d51-4959-4b35-a1c8-2ba543beef0b", width="520">
 </p>
@@ -188,6 +221,10 @@ The signal is clipped or non-linearly transformed to create harmonic distortion.
 #### Input and output Analysis
 User can choose amplifying factor to have more distortion. Here in this sample, input
 of amplifying given 1.
+<h1 align= "center">
+
+**Distortion**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/1316d5c5-aa44-4f18-9055-ad9237a20dd3", width="520">
 </p>
@@ -202,6 +239,10 @@ The signal is scaled proportionally to reach the desired peak value.
 User can choose the peak of the signal. The normalized signal basically scaled at
 amplitude of1 then multiply with user gain. Here is an example output with peak 1
 chosen.
+<h1 align= "center">
+
+**Normalize**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/d51e7295-2a54-40e3-8f31-2f5b32271dce", width="520">
 </p>
@@ -225,6 +266,10 @@ frequencies in the reverb decay compared to lower frequencies.
 #### Input and output Analysis
 User can chose wet mixing percentage fo reverb effect. For example, in the sample her
 we choose wet to be 100 percent.
+<h1 align= "center">
+
+**Reverb**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/7bb1872d-c1be-4555-99db-f84f2dafc8fd", width="520">
 </p>
@@ -239,6 +284,10 @@ amplitude. This is done by appending zeros to the signal, shifting it, scaling i
 adding it back to the original signal by taking delay time(0-0.5)s input from user.
 #### Input and output Analysis
 Here as a sample we choose 0.1 as delay time.
+<h1 align= "center">
+
+**Echo**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/fc9fbd49-9afc-4674-afd7-d84cfed6b2d1", width="520">
 </p>
@@ -253,6 +302,10 @@ and no attenuation in echoes.
 #### Input and output Analysis
 Here we take delay time 1 to 4 s as user input. In the sample we tested with delay
 time of 2s.
+<h1 align= "center">
+
+**Delay**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/46cde784-7e09-4483-8b88-a761ae7feb6c", width="520">
 </p>
@@ -272,7 +325,10 @@ Here user can give input delay time in seconds 0 to 0.3 and a feedback gain 0 to
 That means delayed multiples of original sound gain would be same or less according
 to user needs. Here, in example output we choose delay time as 0.1 and feedback gain
 of 1.
+<h1 align= "center">
 
+**Chorus**
+</h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/ab3ac71d-0dad-4549-989c-0c0405b75c51", width="520">
 </p>
@@ -297,7 +353,7 @@ graph by look over x axis.
 </h2>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/86c51c85-8ccf-461a-a2e2-d9693360ce70", width="520">
+<img src="https://github.com/user-attachments/assets/f3e73999-5212-4bc9-a4e5-7aa8334da430", width="520">
 </p>
 
 <h2 align= "center">
