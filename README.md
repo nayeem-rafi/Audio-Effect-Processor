@@ -95,7 +95,7 @@ perfectly working from amplitude analysis of the signal.
 **Gain**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="520">
+<img src="https://github.com/user-attachments/assets/3744e1f8-0be6-430f-94b6-7292adf97912", width="620">
 </p>
 
 ### Trimming
@@ -115,7 +115,7 @@ X-axis difference is because original and trimmed one respectively in 10ˆ5 and 
 </h1>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/7e20b060-afb0-4c29-b3a3-7a73c6a0a43f", width="520">
+<img src="https://github.com/user-attachments/assets/7e20b060-afb0-4c29-b3a3-7a73c6a0a43f", width="620">
 </p>
 
 ### Fade In
@@ -133,7 +133,7 @@ effect. For example, here we choose 70 percent of our audio would be faded in.
 **Fade In**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/f20ac608-6a1b-444f-8cd6-511086672d6d", width="520">
+<img src="https://github.com/user-attachments/assets/f20ac608-6a1b-444f-8cd6-511086672d6d", width="620">
 </p>
 
 ### Fade Out
@@ -150,7 +150,7 @@ effect. For example, here we choose 90 percent of our audio would be faded out.
 **Fade Out**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/6f5a9008-cc91-41cb-b7ad-fb1eff960e72", width="520">
+<img src="https://github.com/user-attachments/assets/6f5a9008-cc91-41cb-b7ad-fb1eff960e72", width="620">
 </p>
 
 ### Reverse
@@ -166,7 +166,7 @@ ten will be spelled as reversed ”net” and one will be ”eno”. Here is the
 **Reverse**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/26807570-6777-4cdc-bb18-5c9191fb9cb4", width="520">
+<img src="https://github.com/user-attachments/assets/26807570-6777-4cdc-bb18-5c9191fb9cb4", width="620">
 </p>
 
 ### Speed Up
@@ -184,7 +184,7 @@ it can be inspected.
 **Speed Up**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/f064e997-256f-4cde-9edc-010852af75da", width="520">
+<img src="https://github.com/user-attachments/assets/f064e997-256f-4cde-9edc-010852af75da", width="620">
 </p>
 
 ## Dynamic Effects
@@ -209,7 +209,7 @@ Here as a sample input threshold set to -85dB, attacktime 0.1s,releasetime
 **Compressor**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/03520d51-4959-4b35-a1c8-2ba543beef0b", width="520">
+<img src="https://github.com/user-attachments/assets/03520d51-4959-4b35-a1c8-2ba543beef0b", width="620">
 </p>
 
 ### Distortion
@@ -226,7 +226,7 @@ of amplifying given 1.
 **Distortion**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/1316d5c5-aa44-4f18-9055-ad9237a20dd3", width="520">
+<img src="https://github.com/user-attachments/assets/1316d5c5-aa44-4f18-9055-ad9237a20dd3", width="620">
 </p>
 
 ### Normalize
@@ -244,7 +244,7 @@ chosen.
 **Normalize**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/d51e7295-2a54-40e3-8f31-2f5b32271dce", width="520">
+<img src="https://github.com/user-attachments/assets/d51e7295-2a54-40e3-8f31-2f5b32271dce", width="620">
 </p>
 
 ## Time Based Effects
@@ -271,7 +271,7 @@ we choose wet to be 100 percent.
 **Reverb**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/7bb1872d-c1be-4555-99db-f84f2dafc8fd", width="520">
+<img src="https://github.com/user-attachments/assets/7bb1872d-c1be-4555-99db-f84f2dafc8fd", width="620">
 </p>
 
 ### Echo
@@ -289,7 +289,7 @@ Here as a sample we choose 0.1 as delay time.
 **Echo**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/fc9fbd49-9afc-4674-afd7-d84cfed6b2d1", width="520">
+<img src="https://github.com/user-attachments/assets/fc9fbd49-9afc-4674-afd7-d84cfed6b2d1", width="620">
 </p>
 
 ### Delay
@@ -307,7 +307,7 @@ time of 2s.
 **Delay**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/46cde784-7e09-4483-8b88-a761ae7feb6c", width="520">
+<img src="https://github.com/user-attachments/assets/46cde784-7e09-4483-8b88-a761ae7feb6c", width="620">
 </p>
 
 ## Spectrum Processing Effects
@@ -330,7 +330,7 @@ of 1.
 **Chorus**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/ab3ac71d-0dad-4549-989c-0c0405b75c51", width="520">
+<img src="https://github.com/user-attachments/assets/ab3ac71d-0dad-4549-989c-0c0405b75c51", width="620">
 </p>
 
 ### Pitch shifting
@@ -362,7 +362,7 @@ graph by look over x axis.
 </h2>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/770a2f61-0a19-4794-becf-864b6fa8976f", width="520">
+<img src="https://github.com/user-attachments/assets/770a2f61-0a19-4794-becf-864b6fa8976f", width="620">
 </p>
 
 ### Equalizer
@@ -388,7 +388,7 @@ for Lo-Fi.
 </h2>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/e4886ca4-cca2-42fa-8ee2-ed895d4ec5ba", width="520">
+<img src="https://github.com/user-attachments/assets/e4886ca4-cca2-42fa-8ee2-ed895d4ec5ba", width="620">
 </p>
 
 <h2 align= "center">
@@ -396,7 +396,7 @@ for Lo-Fi.
 **Old radio equalizer**
 </h2>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/e344d466-d503-4cd2-b700-13c0b986637f", width="520">
+<img src="https://github.com/user-attachments/assets/e344d466-d503-4cd2-b700-13c0b986637f", width="620">
 </p>
 
 <h1 align= "center">
@@ -404,7 +404,7 @@ for Lo-Fi.
 **Lo-fi equalizer**
 </h1>
 <p align="center">
-<img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="520">
+<img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="620">
 </p>
 
 ## Result & Analysis
