@@ -1,5 +1,7 @@
 # Audio Effect Processor
 By [Naimur Rahman](https://github.com/nayeem-rafi), [Md. Nayon Khan](https://github.com/nayon045), [Suvom Karmakar](https://github.com/suvom027).
+
+## [Click for Open Source of Project Details & Video](https://drive.google.com/drive/folders/1DnzlJkw3hlO5iq0watlQuw7EBvpG2Dsl?usp=drive_link)
 ## Abstract
 This project report documents the design and implementation of an Audio Effects
 Processor using MATLAB, focusing on providing real-time manipulation of audio
