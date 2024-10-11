@@ -1,5 +1,6 @@
-classdef App_design_Main_Code < matlab.apps.AppBase
+classdef Main_App < matlab.apps.AppBase
 
+    % Properties that correspond to app components
     properties (Access = public)
         UIFigure                  matlab.ui.Figure
         title                     matlab.ui.control.EditField
@@ -74,6 +75,7 @@ classdef App_design_Main_Code < matlab.apps.AppBase
     y15=[]
     Fs15
     gain 
+    selectedFile
     end  
     
     
@@ -98,7 +100,7 @@ classdef App_design_Main_Code < matlab.apps.AppBase
             % Define the number of sliders
             numSliders = 9;
             sliders = gobjects(1, numSliders);
-            gainLabels = [">85 Hz", "280 Hz", "450 Hz", "1 kHz", "3 kHz", ...
+            gainLabels = [">85 Hz", "280 Hz", "450 Hz", "1 Hz", "3 Hz", ...
                           "6 kHz", "10 kHz", "13 kHz", "16< kHz"];
             gain = zeros(1, numSliders);
 
@@ -145,8 +147,8 @@ classdef App_design_Main_Code < matlab.apps.AppBase
 
         % Button pushed function: PlayOriginalAudioButton
         function PlayOriginalAudioButtonPushed(app, event)
-            
-           sound(app.y,app.Fs);
+           [y000, Fs000] = audioread(app.selectedFile); 
+           sound(y000,Fs000);
         end
 
         % Button pushed function: ApplyEffectButton
@@ -236,7 +238,10 @@ classdef App_design_Main_Code < matlab.apps.AppBase
 
         % Button pushed function: SaveProcessedAudioButton
         function SaveProcessedAudioButtonPushed(app, event)
-            audiowrite('Output Audio.wav', app.y0, app.Fs0);
+        % Find the maximum absolute value in app.y0 to normalize the signal
+
+
+            audiowrite('Output Audio.wav', app.y0, app.Fs0, 'BitsPerSample', 32);
         end
 
         % Button pushed function: BrowseButton
@@ -250,12 +255,12 @@ classdef App_design_Main_Code < matlab.apps.AppBase
                  app.f_name.Value = 'No file selected';  % Or keep this field empty
             else
                  % Get the full file path
-                 selectedFile = fullfile(app.path, app.file);
+                 app.selectedFile = fullfile(app.path, app.file);
         
                 % Display the file name in the text field (FileNameEditField)
-                app.f_name.Value = selectedFile;
+                app.f_name.Value = app.selectedFile;
             end
-            [app.y, app.Fs] = audioread(selectedFile);
+            [app.y, app.Fs] = audioread(app.selectedFile);
         end
 
         % Button pushed function: GainButton
@@ -745,14 +750,14 @@ classdef App_design_Main_Code < matlab.apps.AppBase
                app.Fs = app.Fs14;
             end
             app.k=6;
-            prompt = {'Enter speedup multiflying factor from .2x to 4x:'};
+            prompt = {'Enter speedup multiflying factor from 1x to 4x:'};
             dlgTitle = 'Input';
             numLines = 1;
             userInputStr = inputdlg(prompt, dlgTitle, numLines);
 
             % Convert input to numeric
             inp = str2double(userInputStr{1});
-            if inp < .2 || inp > 4
+            if inp < 1 || inp > 4
                error('Multiflying factor must be in 1x to 4x.');
             end
 
@@ -1773,7 +1778,7 @@ app.Fs15=app.Fs;
             % Create FadeOutButton
             app.FadeOutButton = uibutton(app.UIFigure, 'push');
             app.FadeOutButton.ButtonPushedFcn = createCallbackFcn(app, @FadeOutButtonPushed, true);
-            app.FadeOutButton.Position = [16 361 100 22];
+            app.FadeOutButton.Position = [16 360 100 22];
             app.FadeOutButton.Text = 'Fade Out';
 
             % Create ReverseButton

@@ -380,6 +380,16 @@ input of Gain for 85 Hz: -20, Gain for 280 Hz: -16, Gain for 450 Hz: -14, Gain f
 Hz: -8, Gain for 3 kHz: -4, Gain for 6 kHz: 0, Gain for 10 kHz: 4, Gain for 13 kHz: 10,
 Gain for 16 kHz: 12, filter type IIR and 2nd output for old radio effect and 3rd one
 for Lo-Fi.
+
+<h2 align= "center">
+
+**Band Input Interface**
+</h2>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/853d247c-3f20-4e47-8404-a7cc6593a629", width="620">
+</p>
+
 <h2 align= "center">
 
 **Random input equalizer**
@@ -391,7 +401,7 @@ for Lo-Fi.
 
 <h2 align= "center">
 
-**Old radio equalizer**
+**Old Radio Equalizer**
 </h2>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/e344d466-d503-4cd2-b700-13c0b986637f", width="620">
@@ -399,7 +409,7 @@ for Lo-Fi.
 
 <h1 align= "center">
 
-**Lo-fi equalizer**
+**Lo-fi Equalizer**
 </h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="620">
