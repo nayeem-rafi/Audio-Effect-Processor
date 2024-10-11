@@ -51,8 +51,6 @@ Interface significantly improves the accessibility of our system, catering to bo
 
 • **Play different audios**  
 
-• **Sound clear button**  
-
 • **Reset button**  
 
 • **Save button**
