@@ -401,7 +401,7 @@ for Lo-Fi.
 
 <h2 align= "center">
 
-**Old Radio Equalizer**
+**Old Radio Effect by Equalizer**
 </h2>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/e344d466-d503-4cd2-b700-13c0b986637f", width="620">
@@ -409,7 +409,7 @@ for Lo-Fi.
 
 <h1 align= "center">
 
-**Lo-fi Equalizer**
+**Lo-fi Effect by Equalizer**
 </h1>
 <p align="center">
 <img src="https://github.com/user-attachments/assets/efb0dc92-d83f-475c-8d83-d1bc7538aef3", width="620">
