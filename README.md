@@ -60,8 +60,6 @@ Interface significantly improves the accessibility of our system, catering to bo
 
 • **Can see both original and effected graph**  
 
-• **Can check if wanted to that reverse graph matched with original**  
-
 • **Can save the audio**  
 
 • **Can apply multiple effects over one audio**
@@ -99,7 +97,7 @@ perfectly working from amplitude analysis of the signal.
 ### Trimming
 Trimming means cutting a certain section of an audio, anywhere , any section of the
 audio according to users preference.
-#### implementation
+#### Implementation
 From the user input, from starting time to end time, we find out the total sample and
 audio write that portion in a new signal variable.
 #### Input and output Analysis
@@ -120,7 +118,7 @@ X-axis difference is because original and trimmed one respectively in 10ˆ5 and 
 The Fade In effect gradually increases the volume of the audio upto the point user
 wanted and finally reach the maximum level and stay in max. The effect doesn’t have any extra gaining. So it starts soft and then becomes louder. This is useful for making
 smooth transitions into a track.
-#### implementation
+#### Implementation
 A linear ramp is applied to the initial part of the audio signal, gradually increasing
 the amplitude to maximum.
 #### Input and output Analysis
@@ -154,7 +152,7 @@ effect. For example, here we choose 90 percent of our audio would be faded out.
 ### Reverse
 The Reverse effect plays the audio backward, starting from the end and moving toward
 the beginning.
-#### implementation
+#### Implementation
 A matlab function ”flipud” used to flip the audio and play from the backward.
 #### Input and output Analysis
 Audio will be reversed like one to ten counting audio will be reversed, ten to one but
@@ -170,7 +168,7 @@ ten will be spelled as reversed ”net” and one will be ”eno”. Here is the
 ### Speed Up
 The Speed Up effect changes the playback speed of the audio. Speeding it up makes
 it play faster.
-#### implementation
+#### Implementation
 Multiplying frequency is applied to the audio to change its duration, speeding it up
 without altering pitch.
 #### Input and output Analysis
@@ -191,7 +189,7 @@ it can be inspected.
 The Compressor reduces the difference between the loud and soft parts of the audio.
 If a sound gets too loud, the compressor lowers the volume to make it more balanced,
 so the listener doesn’t have to adjust the volume constantly.
-#### implementation
+#### Implementation
 Compression is applied based on a threshold, ratio, makeupgain, attacktime, releasetime
 reducing the amplitude of loud sections. Threshold is limit, where if sound passes
 threshold then it will be decrease according to the ratio, like if ration is 5 means after
@@ -214,7 +212,7 @@ Here as a sample input threshold set to -85dB, attacktime 0.1s,releasetime
 The Distortion effect changes the audio to make it sound rough or gritty, usually by
 increasing the signal strength beyond its limits. This can give the sound a fuzzy or
 overdriven quality, often used in electric guitars.
-#### implementation
+#### Implementation
 The signal is clipped or non-linearly transformed to create harmonic distortion.
 #### Input and output Analysis
 User can choose amplifying factor to have more distortion. Here in this sample, input
@@ -231,7 +229,7 @@ of amplifying given 1.
 The Normalize effect adjusts the overall volume so that the loudest part of the audio
 reaches a target level. It ensures the audio isn’t too soft or too loud by scaling the
 volume to a certain point.
-#### implementation
+#### Implementation
 The signal is scaled proportionally to reach the desired peak value.
 #### Input and output Analysis
 User can choose the peak of the signal. The normalized signal basically scaled at
@@ -251,7 +249,7 @@ chosen.
 The Reverb effect simulates how sound behaves in a space like a room or hall. It adds
 a sense of space and depth to the audio by creating small echoes, making the sound
 feel more ”live” or distant.
-#### implementation
+#### Implementation
 We used a matlab built-in function which convolve the audio signal with an impulse
 response, simulating the reverberation of a specific environment. The function take
 sample rate of the signal, Pre- delay, wet, high frequency damping factor. We fixed all
@@ -276,7 +274,7 @@ we choose wet to be 100 percent.
 The Echo effect is like delay but with multiple repetitions. Each time the sound repeats,
 it becomes softer and softer, giving the impression of sound bouncing off walls, like in
 a canyon or large room.
-#### implementation
+#### Implementation
 We created echo by delaying the original signal and adding it to itself with reduced
 amplitude. This is done by appending zeros to the signal, shifting it, scaling it, and
 adding it back to the original signal by taking delay time(0-0.5)s input from user.
@@ -294,7 +292,7 @@ Here as a sample we choose 0.1 as delay time.
 The Delay effect adds a copy of the audio that plays after a short pause. This
 delayed copy is mixed with the original sound, making it sound like there’s an echo or
 repetition.
-#### implementation
+#### Implementation
 Echo and delay effect are quite similar but in delay their is more delay time than echo
 and no attenuation in echoes.
 #### Input and output Analysis
@@ -314,7 +312,7 @@ time of 2s.
 The Chorus effect creates a richer, fuller sound by layering the original audio with
 slightly delayed and pitch-shifted versions of itself. This makes it sound like multiple
 people or instruments are playing the same part.
-#### implementation
+#### Implementation
 The chorus effect created by duplicating the original signal, applying small, varying
 delays to each copy, and mixing them back with the original. This simulates the effect
 of multiple voices or instruments playing the same note with slight timing variations.
@@ -334,7 +332,7 @@ of 1.
 ### Pitch shifting
 Pitch shifting changes the pitch of the audio without affecting the speed can create
 deep to shallow voices by changes in voice frequency caused by shift of pitch.
-#### implementation
+#### Implementation
 We pitch shifting achieve by resampling the signal at a different rate, effectively changing
 its pitch. We have used matlab built-in function shiftpitch to resample and shift
 the pitch.
@@ -368,7 +366,7 @@ The Equalization (EQ) effect adjusts the balance of different frequency ranges i
 audio. We can boost or reduce the bass, mids, or treble to change the tone of the
 sound, similar to adjusting the ”bass” and ”treble” on a stereo.
 
-#### implementation
+#### Implementation
 A 9-band equalizer is implemented using filters to control low, mid, and high-frequency
 content. We keep both IIR and FIR filters and we choose 1st band 85 Hz, 2nd band
 280 Hz, 3rd band 450 Hz, 4th band 1kHz, 5th band 3 KHz, 6th band 6 KHz, 7th band
@@ -392,7 +390,7 @@ for Lo-Fi.
 
 <h2 align= "center">
 
-**Random input equalizer**
+**Random Input Equalizer**
 </h2>
 
 <p align="center">
